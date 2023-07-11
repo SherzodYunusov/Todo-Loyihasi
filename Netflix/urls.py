@@ -15,15 +15,33 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from app1.views import *
+from rest_framework.routers import DefaultRouter
+
+from rest_framework.authtoken.views import obtain_auth_token
+
+router = DefaultRouter()
+router.register("aktyorlar", AktyorModelViewSet)
+router.register("kinolar", KinoModelViewSet)
+router.register("Izohlar", IzohModelViewSet)
+router.register("Izoh", IzohDeleteViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('token/', obtain_auth_token),
     path('hello/', HelloApiView.as_view()),
+    path('', include(router.urls)),
     path('aktyor/', AktyorApiView.as_view()),
-    path('aktyor/<int:pk>/', BittaAktyorApiView.as_view()),
-    path('aktyor/<int:pk>/delete', OchirishAktyorApiView.as_view()),
+    # path('aktyor/<int:pk>/', BittaAktyorApiView.as_view()),
+    # path('aktyor/<int:pk>/delete', OchirishAktyorApiView.as_view()),
     path('izoh/', IzohApiView.as_view()),
     path('izoh/<int:pk>/', BittaIzohApiView.as_view()),
+    path('kino/', KinoApiView.as_view()),
+    # path('kinolar/<int:pk>/', KinoDetailApiView.as_view()),
+    # path('kino/<int:pk>/delete', KinoDeleteApiView.as_view()),
+    # path('kino/<int:pk>/', BittaKinoApiView.as_view()),
+
+
 ]

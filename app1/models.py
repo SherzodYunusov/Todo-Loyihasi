@@ -18,8 +18,8 @@ class Kino(models.Model):
     nom = models.CharField(max_length=100)
     janr = models.CharField(max_length=50)
     yil = models.DateField()
-    davomiylik = models.DurationField()
-    aktyorlar = models.ManyToManyField(Aktyor, related_name='aktyor')
+    davomiylik = models.DurationField(null=True, blank=True)
+    aktyorlar = models.ManyToManyField(Aktyor)
     reyting = models.FloatField()
     def __str__(self):
         return self.nom
@@ -30,6 +30,7 @@ class Izoh(models.Model):
     sana = models.DateField(auto_now_add=True)
     baho = models.PositiveSmallIntegerField()
     kino = models.ForeignKey(Kino, on_delete=models.CASCADE)
+
 
 
 # Create your models here.

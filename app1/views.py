@@ -9,6 +9,8 @@ from rest_framework.decorators import action
 from django.contrib.postgres.search import TrigramSimilarity
 
 from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from rest_framework.permissions import *
 
 from .models import *
@@ -168,8 +170,10 @@ class KinoModelViewSet(ModelViewSet):
 class IzohModelViewSet(ModelViewSet):
     queryset = Izoh.objects.all()
     serializer_class = IzohSerializer
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         queryset = Izoh.objects.filter(user=self.request.user)
         return queryset
@@ -181,11 +185,6 @@ class IzohModelViewSet(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class IzohDeleteViewSet(ModelViewSet):
-    queryset = Izoh.objects.all()
-    serializer_class = IzohSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
     def delete(self, request):
         serializer = IzohSerializer(data=request.data)
         if serializer.is_valid():

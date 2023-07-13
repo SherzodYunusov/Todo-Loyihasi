@@ -18,19 +18,21 @@ from django.contrib import admin
 from django.urls import path, include
 from app1.views import *
 from rest_framework.routers import DefaultRouter
-
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from rest_framework.authtoken.views import obtain_auth_token
 
 router = DefaultRouter()
 router.register("aktyorlar", AktyorModelViewSet)
 router.register("kinolar", KinoModelViewSet)
 router.register("Izohlar", IzohModelViewSet)
-router.register("Izoh", IzohDeleteViewSet)
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('token/', obtain_auth_token),
+    path('token_olish/', TokenObtainPairView.as_view()),
+    path('token_yangilash/', TokenRefreshView.as_view()),
     path('hello/', HelloApiView.as_view()),
     path('', include(router.urls)),
     path('aktyor/', AktyorApiView.as_view()),
